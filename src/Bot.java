@@ -1,3 +1,4 @@
+import configurations.Config;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -49,10 +50,14 @@ public class Bot extends TelegramLongPollingBot
 
         String text = message.getText();
 
-        if(text.equals("Привет"))
+        for (String command: Config.COMMANDS_LIST)
         {
-            sendMessange(message,"Здравствуй!");
+            /*if(text.equals(command))
+            {
+                sendMessange(message,"");
+            }*/
         }
+
     }
 
     @Override
