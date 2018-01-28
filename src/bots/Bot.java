@@ -1,37 +1,30 @@
+package bots;
+
+import birthdays.NotificationBirthday;
 import configurations.Config;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+
 public class Bot extends TelegramLongPollingBot
 {
-
-    public static void main(String[] args)
+    public Bot()
     {
-        ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        Thread thread = new Thread(new NotificationBirthday(this));
+        thread.start();
 
-        try
-        {
-            telegramBotsApi.registerBot(new Bot());
-        }
-        catch (TelegramApiException e)
-        {
-            e.printStackTrace();
-        }
     }
 
-
     @SuppressWarnings("deprecation")
-    private void sendMessange(Message message, String text)
+    public void send(Message message, String text)
     {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(message.getChatId());
         sendMessage.setText(text);
+
 
         try
         {
@@ -43,21 +36,35 @@ public class Bot extends TelegramLongPollingBot
         }
     }
 
+
+
     @Override
     public void onUpdateReceived(Update update)
     {
         Message message = update.getMessage();
-
-        String text = message.getText();
-
-        for (String command: Config.COMMANDS_LIST)
+        if(message != null && message.hasText())
         {
-            /*if(text.equals(command))
-            {
-                sendMessange(message,"");
-            }*/
-        }
+            String text = message.getText();
 
+
+            switch (text)
+            {
+                case "Привет":
+                {
+                    send(message, "Привет, " + message.getFrom().getFirstName());
+                }
+                break;
+                case "Как дела":
+                {
+                    send(message, "Хорошо, а как у тебя?");
+                }
+                break;
+                default:
+                {
+                    send(message, "Я вас не понимаю");
+                }
+            }
+        }
     }
 
     @Override

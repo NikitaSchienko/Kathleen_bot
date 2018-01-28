@@ -1,27 +1,17 @@
-package events;
+package birthdays;
 
-public class Event
+import java.text.SimpleDateFormat;
+
+public class Birthday
 {
-    private int id;
     private String text;
     private Long date;
 
-    public Event(String text, Long date)
+    public Birthday(String text, Long date)
     {
         this.text = text;
         this.date = date;
     }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
 
     public String getText()
     {
@@ -41,5 +31,12 @@ public class Event
     public void setDate(Long date)
     {
         this.date = date;
+    }
+
+    @Override
+    public String toString()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return text + " " + dateFormat.format(date);
     }
 }
