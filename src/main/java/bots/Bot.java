@@ -1,6 +1,5 @@
 package main.java.bots;
 
-import main.java.birthdays.NotificationBirthday;
 import main.java.configurations.Config;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -8,14 +7,18 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.util.ArrayList;
+
 
 public class Bot extends TelegramLongPollingBot
 {
+    private ArrayList<String> dialog;
+
     public Bot()
     {
-        Thread thread = new Thread(new NotificationBirthday(this));
-        thread.start();
-
+        dialog = new ArrayList<String>();
+        //Thread thread = new Thread(new NotificationHoliday(this));
+        //thread.start();
     }
 
     @SuppressWarnings("deprecation")
@@ -41,6 +44,8 @@ public class Bot extends TelegramLongPollingBot
     @Override
     public void onUpdateReceived(Update update)
     {
+        dialog.add(update.getMessage().getText());
+
         Message message = update.getMessage();
         if(message != null && message.hasText())
         {
@@ -54,14 +59,39 @@ public class Bot extends TelegramLongPollingBot
                     send(message, "Привет, " + message.getFrom().getFirstName());
                 }
                 break;
-                case "Как дела":
+                case "Как дела?":
                 {
                     send(message, "Хорошо, а как у тебя?");
                 }
                 break;
+                case "Какая погода?":
+                {
+
+                }
+                break;
+                case "Что идет в кино?":
+                {
+
+                }
+                break;
+                case "Куда сходить?":
+                {
+
+                }
+                break;
+                case "Что посмотреть?":
+                {
+
+                }
+                break;
                 default:
                 {
-                    send(message, "Я вас не понимаю");
+                    String answer = "Я вас не понимаю, вы можете спросить у меня:"
+                            +"\nКакая погода?"
+                            +"\nЧто идет в кино?"
+                            +"\nКуда сходить?"
+                            +"\nЧто посмотреть?";
+                    send(message, answer);
                 }
             }
         }

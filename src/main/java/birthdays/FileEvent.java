@@ -17,9 +17,9 @@ public class FileEvent
         this.path = path;
     }
 
-    public ArrayList<Birthday> loadingListEvent()
+    public ArrayList<Holiday> loadingListEvent()
     {
-        ArrayList<Birthday> birthdays = new ArrayList<Birthday>();
+        ArrayList<Holiday> holidays = new ArrayList<Holiday>();
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path)))
         {
@@ -28,8 +28,8 @@ public class FileEvent
             {
                 JSONObject jsonObject =new JSONObject(line);
 
-                Birthday birthday = new Birthday(jsonObject.getString("text"),jsonObject.getLong("date"));
-                birthdays.add(birthday);
+                Holiday holiday = new Holiday(jsonObject.getString("text"),jsonObject.getLong("date"),jsonObject.getInt("type"));
+                holidays.add(holiday);
             }
         }
         catch(Exception ex)
@@ -37,19 +37,20 @@ public class FileEvent
             System.out.println(ex.getMessage());
         }
 
-        return birthdays;
+        return holidays;
     }
 
-    public void saveListEvent(ArrayList<Birthday> birthdays)
+    public void saveListEvent(ArrayList<Holiday> holidays)
     {
 
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path)))
         {
-            for (Birthday birthday : birthdays)
+            for (Holiday holiday : holidays)
             {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("date",birthday.getDate());
-                jsonObject.put("text",birthday.getText());
+                jsonObject.put("date", holiday.getDate());
+                jsonObject.put("text", holiday.getText());
+                jsonObject.put("type",holiday.getType());
 
                 bufferedWriter.write(jsonObject.toString()+'\n');
             }

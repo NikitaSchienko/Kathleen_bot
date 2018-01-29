@@ -2,16 +2,30 @@ package main.java.birthdays;
 
 import java.text.SimpleDateFormat;
 
-public class Birthday
+public class Holiday
 {
     private String text;
     private Long date;
+    private int type;
 
-    public Birthday(String text, Long date)
+    public void setType(int type)
     {
+        this.type = type;
+    }
+
+    public int getType()
+    {
+        return type;
+    }
+
+    public Holiday(String text, Long date, int type)
+    {
+        this.type = type;
         this.text = text;
         this.date = date;
     }
+
+
 
     public String getText()
     {
